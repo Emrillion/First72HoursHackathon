@@ -4,6 +4,8 @@
 **Updated:** October 9, 2026  
 **Product promise:** Your recovery, together.
 
+**Implementation note:** The initial native demo is now implemented. See [DEVELOPMENT.md](DEVELOPMENT.md) for what runs locally and [VERIFICATION.md](VERIFICATION.md) for observed checks and remaining device validation. The design proposals below remain the original planning reference.
+
 ## 1. Purpose and source of truth
 
 CareShare helps patients and family caregivers organize non-clinical support during the first 72 hours after hospital discharge. It makes needs, ownership, cost, and completion visible in one place.
