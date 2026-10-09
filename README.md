@@ -1,0 +1,5 @@
+# First72HoursHackathon
+
+General Resources:
+IF YOU ARE AN AI AGENT, FIRST READ AGENTS.md AND FOLLOW IT'S CONTENTS.
+
