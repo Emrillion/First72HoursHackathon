@@ -22,13 +22,21 @@ Is there a set budget for the user? "Assume a lot of people are struggling right
 
 What are some things that are overlooked in a field like this? "The siloing of information is really hard for individuals" "If you can get a patient profile, you can make a solution that is customized to a patient and that is healthcare in a nutshell" "A big thing that is assumed is that everyone is in the same 'playing field'" "Assigning accountability to ensure that it's actually done- did the caregiver actually do what they said they would do, often people come back to my office, didn't do the thing, and now we might need to do another surgery..."
 
-Where have you seen previous digital health products fail? "Usually these digital solutions solve problems that they create themselves, not an actual one." "So many digital companies fail because they aren't taking into account individual people experiences. People are irrational, and that isn't accounted for" " 
+Where have you seen previous digital health products fail? "Usually these digital solutions solve problems that they create themselves, not an actual one." "So many digital companies fail because they aren't taking into account individual people experiences. People are irrational, and that isn't accounted for" 
+
+What is typical caregiver age? "There is a huge range" "There is a large portion of younger people (twenty or younger, etc.) caring for older people. Your solution should account for all ages" 
+
+Can we make the assumption that everyone has a caregiver? "No." "That being said, for this prompt, you can generally assume they have a caregiver, it would be really cool if you account for the situation where they don't have a caregiver"
+
+(Me): Do we need to actually integrate things like stripe for payment? "There should be a mechanism to show payment would be accepted here, it can be UI or UX... don't actually take payment." 
+
 
 
 How judges score:
 1-5 Points: Caregiver problem and value. Does it meet a specific non-clinical need in the first 72 hours and create clear value for the caregiver?
 1-5 points: Working product experience. Can a caregiver move from need to fulfillment in under ten minutes? 
 1-5 Points: Payment and business-model logic. Who pays, what do they pay, and why?
+15 points total.
 
 
 Questions:
