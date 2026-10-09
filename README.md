@@ -2,6 +2,14 @@
 
 **Your recovery, together.**
 
+## Run the iOS demo
+
+Open `CareShare.xcodeproj` in Xcode, select the **CareShare** scheme and an iPhone simulator, then Run. Tap **Explore the demo plan** to start. The same iPhone-targeted build runs on iPad in compatibility mode.
+
+The first implementation includes Plan, Find Help, Circle, accepted task ownership, a $24 mock meal checkout, completion history, and local persistence. All people, services, bookings, and payments are fictional. See [DEVELOPMENT.md](DEVELOPMENT.md) for the demo script, free Personal Team signing, architecture, tests, and limitations.
+
+The product vision below includes capabilities, such as invitations and shared accounts, that are not connected in this local prototype.
+
 CareShare is a task-sharing application designed to help patients manage everyday responsibilities after leaving the hospital. By connecting patients with family members, friends, and caregivers, CareShare makes it easier to coordinate support, track responsibilities, and ensure important recovery tasks don't get overlooked.
 
 ## The Problem
@@ -101,4 +109,4 @@ CareShare aims to make coordinating these everyday responsibilities simpler and 
 
 ## Disclaimer
 
-CareShare is intended to support task coordination and is not a substitute
+CareShare is intended to support non-clinical task coordination and is not a substitute for medical advice or clinical discharge instructions.
