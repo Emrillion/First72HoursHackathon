@@ -136,3 +136,10 @@ enum CareError: LocalizedError, Equatable {
 extension Int {
     var dollars: String { (Double(self) / 100).formatted(.currency(code: "USD")) }
 }
+
+/// A single-use invitation for the local prototype, not a cross-device credential.
+struct PlanInvitation: Codable, Equatable {
+    var code: String
+    var planID: UUID
+    var expiresAt: Date
+}

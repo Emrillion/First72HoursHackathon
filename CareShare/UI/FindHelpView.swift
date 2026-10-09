@@ -14,7 +14,7 @@ struct FindHelpView: View {
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                Text("You don’t have to\ndo it all.").font(.largeTitle.bold())
+                Text("Find a little extra help").font(.title.bold())
                 Text(task.map { "Let’s find a little support for: \($0.title)." } ?? "Explore sample services for uncovered meals and rides.")
                     .foregroundStyle(CareTheme.muted)
                 DemoNotice()
@@ -36,7 +36,6 @@ struct FindHelpView: View {
                                 .font(.caption.weight(.bold)).foregroundStyle(CareTheme.teal)
                             Text(option.title).font(.title2.bold())
                             Text(option.provider).font(.subheadline).foregroundStyle(CareTheme.muted)
-                            Text(option.scope).font(.callout)
                             Divider()
                             HStack {
                                 Text(option.isReferral ? "Ask about no-cost support" : option.totalCents.dollars).font(.headline)

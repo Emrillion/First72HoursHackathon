@@ -19,6 +19,7 @@ final class CareShareUITests: XCTestCase {
 
     func testCaregiverJourneyAndRelaunch() throws {
         app.tabBars.buttons["Circle"].tap()
+        app.buttons["demoSettings"].tap()
         app.buttons["role-Supporter"].tap()
         app.tabBars.buttons["Plan"].tap()
         let ride = app.buttons["task-Ride to tomorrow’s appointment"]
@@ -116,4 +117,61 @@ final class CareShareUITests: XCTestCase {
         reveal(pay); pay.tap()
         XCTAssertTrue(app.staticTexts["bookingConfirmed"].waitForExistence(timeout: 3))
     }
+    func testGenerateAndEnterJoinCodeThenClaimTask() throws {
+        app.tabBars.buttons["Circle"].tap()
+        app.buttons["inviteSomeone"].tap()
+        let generate = app.buttons["generateJoinCode"]
+        reveal(generate); generate.tap()
+        let code = app.staticTexts["generatedJoinCode"].label
+        XCTAssertEqual(code.count, 8)
+        app.navigationBars.buttons["Done"].tap()
+        app.buttons["enterJoinCode"].tap()
+        app.textFields["joinCodeInput"].tap()
+        app.textFields["joinCodeInput"].typeText("WRONG123")
+        app.textFields["joinNameInput"].tap()
+        app.textFields["joinNameInput"].typeText("Taylor Park")
+        app.buttons["joinPlan"].tap()
+        XCTAssertTrue(app.staticTexts["joinError"].exists)
+        let field = app.textFields["joinCodeInput"]
+        field.tap()
+        field.typeText(String(repeating: XCUIKeyboardKey.delete.rawValue, count: 8) + code)
+        app.buttons["joinPlan"].tap()
+        XCTAssertTrue(app.buttons["joinedDone"].waitForExistence(timeout: 3))
+        app.buttons["joinedDone"].tap()
+        XCTAssertTrue(app.staticTexts["Taylor Park"].exists)
+        XCTAssertFalse(app.buttons["inviteSomeone"].exists)
+        app.tabBars.buttons["Plan"].tap()
+        app.buttons["task-Dinner for tonight"].tap()
+        let claim = app.buttons["claimTask"]
+        reveal(claim); claim.tap()
+        XCTAssertTrue(app.staticTexts["Claimed"].exists)
+        app.terminate()
+        app.launchArguments = ["--uitesting"]
+        app.launch()
+        app.tabBars.buttons["Circle"].tap()
+        XCTAssertTrue(app.staticTexts["Taylor Park"].exists)
+    }
+
+    func testHospitalBillingIsPresentationOnly() throws {
+        let planShot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        planShot.name = "Simplified care plan"
+        planShot.lifetime = .keepAlways
+        add(planShot)
+        app.tabBars.buttons["Hospitals"].tap()
+        XCTAssertTrue(app.staticTexts["Our B2B2C model"].exists)
+        let billing = app.buttons["hospitalBilling"]
+        reveal(billing); billing.tap()
+        XCTAssertTrue(app.staticTexts["UI mockup · payments disabled"].exists)
+        XCTAssertEqual(app.textFields.count, 0)
+        let payment = app.buttons["hospitalPayDisabled"]
+        // Disabled controls may report isHittable differently; scroll until visible.
+        for _ in 0..<5 { if payment.exists && payment.frame.maxY < app.frame.maxY - 90 { break }; app.scrollViews.firstMatch.swipeUp() }
+        XCTAssertTrue(payment.exists)
+        XCTAssertFalse(payment.isEnabled)
+        let shot = XCTAttachment(screenshot: XCUIScreen.main.screenshot())
+        shot.name = "Hospital billing mockup with disabled payment"
+        shot.lifetime = .keepAlways
+        add(shot)
+    }
+
 }

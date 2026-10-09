@@ -176,4 +176,57 @@ final class CareShareCoreTests: XCTestCase {
         XCTAssertThrowsError(try state.updatePreferences(budgetCents: 0, hasDestination: true))
         XCTAssertEqual(state.plan?.budgetCents, 6000)
     }
+    func testJoinCodePersistsAndAddsSupporterWithLimitedAccess() throws {
+        var state = DemoState.seeded(now: now)
+        state.tasks[0].visibility = .coordinators
+        try state.generateJoinCode(now: now)
+        let code = try XCTUnwrap(state.invitation?.code)
+        state = try JSONDecoder().decode(DemoState.self, from: JSONEncoder().encode(state))
+        let formatted = "  " + code.prefix(4).lowercased() + "-" + code.suffix(4).lowercased() + " "
+        let member = try state.joinPlan(code: formatted, name: " Taylor Park ", now: now)
+        XCTAssertEqual(member.name, "Taylor Park")
+        XCTAssertEqual(member.role, .supporter)
+        XCTAssertEqual(state.activeMemberID, member.id)
+        XCTAssertTrue(state.plan!.memberIDs.contains(member.id))
+        XCTAssertEqual(state.visibleTasks(at: now).count, 3)
+        XCTAssertNil(state.invitation)
+        XCTAssertThrowsError(try state.generateJoinCode(now: now))
+        XCTAssertThrowsError(try state.revokeJoinCode())
+        XCTAssertThrowsError(try state.claim(state.tasks[0].id, now: now))
+        try state.claim(state.tasks[1].id, now: now)
+        XCTAssertEqual(state.tasks[1].ownerID, member.id)
+        let before = state
+        XCTAssertThrowsError(try state.joinPlan(code: code, name: "Another person", now: now))
+        XCTAssertEqual(state, before)
+    }
+
+    func testInvalidExpiredReplacedAndRevokedCodesDoNotMutatePlan() throws {
+        var state = DemoState.seeded(now: now)
+        try state.generateJoinCode(now: now)
+        let original = state.invitation!.code
+        for (code, name, time) in [("INVALID!", "Taylor", now), (original, " ", now),
+                                   (original, "Sam Morgan", now), (original, String(repeating: "a", count: 61), now),
+                                   (original, "Taylor", now.addingTimeInterval(24 * 3600))] {
+            let before = state
+            XCTAssertThrowsError(try state.joinPlan(code: code, name: name, now: time))
+            XCTAssertEqual(state, before)
+        }
+        try state.generateJoinCode(now: now)
+        XCTAssertNotEqual(original, state.invitation!.code)
+        XCTAssertThrowsError(try state.joinPlan(code: original, name: "Taylor", now: now))
+        let replaced = state.invitation!.code
+        try state.revokeJoinCode()
+        XCTAssertThrowsError(try state.joinPlan(code: replaced, name: "Taylor", now: now))
+    }
+
+    func testExistingSavedPlansWithoutInvitationStillLoad() throws {
+        var state = DemoState.seeded(now: now)
+        try state.claim(state.tasks[0].id, now: now)
+        var json = try XCTUnwrap(JSONSerialization.jsonObject(with: JSONEncoder().encode(state)) as? [String: Any])
+        json.removeValue(forKey: "invitation")
+        let loaded = try JSONDecoder().decode(DemoState.self, from: JSONSerialization.data(withJSONObject: json))
+        XCTAssertEqual(loaded, state)
+        XCTAssertNil(loaded.invitation)
+    }
+
 }

@@ -18,6 +18,7 @@
 		D95581E8650BA7FC9672798A /* CareShare/Core/DemoState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44CFA070C629DB544344D6F /* CareShare/Core/DemoState.swift */; };
 		E2D504DF95E74A7F7A228AF4 /* CareShare/UI/TaskDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C4971F3B2F1F6223CDEF1E8E /* CareShare/UI/TaskDetailView.swift */; };
 		E4C2D8F8B34E738EC66E7D66 /* CareShare/UI/CircleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6D79A35B136687D08C340C09 /* CareShare/UI/CircleView.swift */; };
+		ADF15087F554B289080F2047 /* CareShare/UI/HospitalView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 870F6F7C2A92982DEBB3742E /* CareShare/UI/HospitalView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -44,6 +45,7 @@
 		C4971F3B2F1F6223CDEF1E8E /* CareShare/UI/TaskDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareShare/UI/TaskDetailView.swift; sourceTree = "<group>"; };
 		F138988908D9D28271FCD9CC /* CareShare/UI/PlanView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareShare/UI/PlanView.swift; sourceTree = "<group>"; };
 		F44CFA070C629DB544344D6F /* CareShare/Core/DemoState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareShare/Core/DemoState.swift; sourceTree = "<group>"; };
+		870F6F7C2A92982DEBB3742E /* CareShare/UI/HospitalView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CareShare/UI/HospitalView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,6 +75,7 @@
 				535D1A2F9D8BDFDEF2ACD794 /* CareShare/UI/CareShareApp.swift */,
 				6D79A35B136687D08C340C09 /* CareShare/UI/CircleView.swift */,
 				676C50EE79646516D3687F77 /* CareShare/UI/FindHelpView.swift */,
+				870F6F7C2A92982DEBB3742E /* CareShare/UI/HospitalView.swift */,
 				F138988908D9D28271FCD9CC /* CareShare/UI/PlanView.swift */,
 				C4971F3B2F1F6223CDEF1E8E /* CareShare/UI/TaskDetailView.swift */,
 				06F5D52033E09AA6F2235FAC /* CareShare/UI/Theme.swift */,
@@ -219,6 +222,7 @@
 				411C87328CE222AC90B3DA5D /* CareShare/UI/CareShareApp.swift in Sources */,
 				E4C2D8F8B34E738EC66E7D66 /* CareShare/UI/CircleView.swift in Sources */,
 				03E0AF847D550D3DFA5CBC0E /* CareShare/UI/FindHelpView.swift in Sources */,
+				ADF15087F554B289080F2047 /* CareShare/UI/HospitalView.swift in Sources */,
 				4EE4C0741F1702CB20FB1256 /* CareShare/UI/PlanView.swift in Sources */,
 				E2D504DF95E74A7F7A228AF4 /* CareShare/UI/TaskDetailView.swift in Sources */,
 				C1EA3955161C8E0AE1C05481 /* CareShare/UI/Theme.swift in Sources */,

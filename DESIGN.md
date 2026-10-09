@@ -1,10 +1,10 @@
 # CareShare — Product and App Design
 
-**Status:** Initial design proposal  
+**Status:** Native prototype with October 9 usability update
 **Updated:** October 9, 2026  
 **Product promise:** Your recovery, together.
 
-**Implementation note:** The initial native demo is now implemented. See [DEVELOPMENT.md](DEVELOPMENT.md) for what runs locally and [VERIFICATION.md](VERIFICATION.md) for observed checks and remaining device validation. The design proposals below remain the original planning reference.
+**Implementation note:** The initial native demo is now implemented. See [DEVELOPMENT.md](DEVELOPMENT.md) for what runs locally and [VERIFICATION.md](VERIFICATION.md) for observed checks and remaining device validation. The usability, B2B2C, and local invitation changes below supersede the original navigation and referral-revenue proposals.
 
 ## 1. Purpose and source of truth
 
@@ -54,25 +54,25 @@ Suggested categories: transportation, meals and groceries, household help, appoi
 
 ### Later work
 
-Live provider booking, actual payment processing, hospital integrations, real invitations and account provisioning, push notifications, calendar sync, recurring tasks, insurance eligibility, multilingual content, and a dedicated tablet experience.
+Live provider booking, actual payment processing, hospital integrations, cross-device invitations and account provisioning, push notifications, calendar sync, recurring tasks, insurance eligibility, multilingual content, and a dedicated tablet experience.
 
 Basic accessible interaction belongs in the MVP, even though broader accessibility improvements appear in the README's future roadmap.
 
 ## 5. Navigation and screens
 
-Use three bottom tabs: **Plan**, **Find Help**, and **Circle**. Payment review and confirmation are steps within a service flow, not separate tabs. Plan opens by default.
+Use four bottom tabs: **Plan**, **Find Help**, **Circle**, and **Hospitals**. Plan opens by default and prioritizes patients and family caregivers. Hospital business-model information and a strictly nonfunctional billing mockup live in Hospitals. Optional service checkout remains inside Find Help.
 
 | Screen | Content and primary action |
 |---|---|
 | Welcome / plan setup | “Who are we helping?”, preferred display name, discharge date/time, optional location for services. Primary action: “Create plan.” Provide a demo-plan shortcut. |
-| Plan | Recovery-window dates, tasks needing help, upcoming responsibilities, and completion progress. Filters: All, Needs help, Covered, Done. Primary action: “Add task.” |
+| Plan | Recovery-window dates, tasks needing help, upcoming responsibilities, and completion progress. Default: To do (incomplete tasks). Filters: To do, Needs help, Done, All. Collapse recovery-window details and keep task cards concise. Primary action: “Add task.” |
 | Add / edit task | Title, category, due date/time, priority, notes, visibility, and optional owner. Keep required fields minimal. Primary action: “Save task.” |
 | Task details | What, when, owner, status, notes, and activity. Role-appropriate actions: “I can help,” “Find help,” “Release task,” and “Mark complete.” |
 | Find Help | Task-relevant service and resource cards with timing, total price, and location/eligibility notes. Offer “Free / community” and “Paid” filters. |
 | Service details | Scope, exclusions, sample availability, price breakdown, cancellation terms, and payer. Primary action: “Review request.” |
 | Review and mock payment | Service, time, payer, total, and a plain-language reason for the expense. Primary action: “Confirm demo payment.” |
 | Confirmation | “Demo booking confirmed,” service summary, mock receipt, and task link. Say that no money was charged and no real provider was contacted. |
-| Circle | Patient/coordinator and supporters, roles, and assigned tasks. Use seeded members and simulated invitations in the demo. |
+| Circle | Patient/coordinator and supporters, roles, and assigned tasks. Show members, Invite someone, and Have a join code? Move role switching, budget preferences, and reset into Plan & demo settings. Codes work on the current device only. |
 
 Free resource cards must distinguish information or referrals from confirmed availability. Do not mark a task covered merely because someone viewed a resource.
 
@@ -123,7 +123,7 @@ The hackathon requires a convincing payment experience without taking money. All
 
 Show the payer by name before confirmation. If someone else is selected as payer, require their approval in a future live implementation; the demo can use a seeded authorized payer. Do not collect real card numbers.
 
-**Proposed business logic:** the patient or family pays the service cost; a future provider-funded referral fee could support CareShare. This revenue model requires validation and is not implemented or deducted in the demo. Community resources should show known costs and eligibility constraints rather than imply guaranteed free support.
+**Confirmed model: B2B2C.** CareShare provides the platform to hospitals; hospitals introduce it to patients and family caregivers. The proposed commercial mechanism is a hospital subscription with no patient platform fee. The billing mockup shows a fictional $499 monthly invoice, static example card, and disabled payment action; pricing is illustrative. It collects no payment details and creates no transaction. Optional third-party meals and rides remain separate sample expenses, with no assumed hospital or insurance funding.
 
 ## 9. Implementation outline
 
@@ -140,8 +140,9 @@ Views should use shared plan/task state. Put booking and payment behavior behind
 | Arrangement | ID, task ID, service ID, payer ID, requested time, status, demo flag |
 | PaymentRecord | ID, arrangement ID, payer, amount, currency, simulated status, receipt reference |
 | Activity | ID, task ID, actor ID, event, timestamp |
+| PlanInvitation | Random eight-character code, plan ID, 24-hour expiry; optional for saved-data compatibility |
 
-Use fictional people and addresses in the demo. Persist local changes across relaunches and provide a deliberate “Reset demo” action. A single-device role switch is sufficient to demonstrate coordination; real cross-device sync and authentication remain future work.
+Use fictional people and addresses in the demo. Persist local changes across relaunches and provide a deliberate “Reset demo” action. Join codes persist locally, admit a named supporter, and switch the demo perspective to that supporter. Each code is single-use, expires after 24 hours, can be revoked, and is invalidated by generation of a replacement. Only patients and coordinators generate codes; supporters cannot see private tasks. Codes do not authenticate people or connect devices; real cross-device sync and authentication remain future work.
 
 In a production implementation, enforce membership and permissions in the backend, not only in the UI. Collect the minimum information needed to arrange practical support.
 
@@ -157,6 +158,8 @@ Target a 6–8 minute walkthrough, leaving room below the ten-minute requirement
 6. Confirm the mock payment and show the demo receipt.
 7. Return to Plan: dinner is Arranged and transportation is Claimed.
 8. Simulate fulfillment, record completion, and show who completed the task and when.
+9. In Circle, generate a join code, then enter it with a fictional supporter name on the same device.
+10. Show Hospitals to explain B2B2C and open the disabled hospital billing mockup.
 
 Set seed times relative to demo reset so the walkthrough stays coherent on event day. Keep the demo usable without live provider APIs or external payment services.
 
@@ -174,6 +177,9 @@ Set seed times relative to demo reset so the walkthrough stays coherent on event
 - [ ] Relaunch preserves progress; Reset demo restores a coherent scenario.
 - [ ] The flow works for a patient with no seeded supporters.
 - [ ] Demo labels make simulated providers, bookings, and payments clear.
+- [ ] Local join codes reject invalid, expired, replaced, revoked, and reused codes without changing membership.
+- [ ] Existing saved plans still load after the update.
+- [ ] Hospitals explains who pays; billing is visibly nonfunctional and cannot collect payment details.
 
 These are implementation acceptance criteria; no app build or device testing has been completed by creating this document.
 

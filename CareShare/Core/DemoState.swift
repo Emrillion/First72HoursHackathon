@@ -4,6 +4,7 @@ import Foundation
 /// Production authentication, authorization, and atomic booking belong on a server.
 struct DemoState: Codable, Equatable {
     var schemaVersion = 1
+    var invitation: PlanInvitation?
     var plan: RecoveryPlan?
     var members: [Member] = []
     var activeMemberID: UUID?
@@ -99,6 +100,45 @@ struct DemoState: Codable, Equatable {
             throw CareError.invalid("This person is not a member of this plan.")
         }
         activeMemberID = id
+    }
+
+    mutating func generateJoinCode(now: Date = Date()) throws {
+        try requireCoordinator()
+        guard let plan else { throw CareError.invalid("Create a plan first.") }
+        let alphabet = Array("ABCDEFGHJKLMNPQRSTUVWXYZ23456789")
+        var code: String
+        repeat { code = String((0..<8).map { _ in alphabet.randomElement()! }) }
+        while code == invitation?.code
+        invitation = PlanInvitation(code: code, planID: plan.id, expiresAt: now.addingTimeInterval(24 * 3600))
+    }
+
+    mutating func revokeJoinCode() throws {
+        try requireCoordinator()
+        invitation = nil
+    }
+
+    @discardableResult
+    mutating func joinPlan(code: String, name: String, now: Date = Date()) throws -> Member {
+        let normalized = code.uppercased().filter { !$0.isWhitespace && $0 != "-" }
+        guard let invitation, invitation.planID == plan?.id, invitation.code == normalized else {
+            throw CareError.invalid("That code doesn’t match this device’s plan. Ask the coordinator for a new code. Codes cannot connect separate devices yet.")
+        }
+        guard now < invitation.expiresAt else {
+            throw CareError.invalid("This code has expired. Ask the coordinator to generate a new one.")
+        }
+        let cleanName = name.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanName.isEmpty, cleanName.count <= 60 else {
+            throw CareError.invalid("Enter a display name between 1 and 60 characters.")
+        }
+        guard !members.contains(where: { $0.name.caseInsensitiveCompare(cleanName) == .orderedSame }) else {
+            throw CareError.invalid("Someone with that name is already in the circle. Use a distinct display name or switch to the existing demo member in settings.")
+        }
+        let member = Member(name: cleanName, role: .supporter)
+        members.append(member)
+        plan?.memberIDs.append(member.id)
+        activeMemberID = member.id
+        self.invitation = nil
+        return member
     }
 
     mutating func saveTask(_ task: CareTask, now: Date = Date()) throws {

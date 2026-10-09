@@ -1,3 +1,18 @@
+# October 9 usability, hospital billing, and invitations update
+
+## Current verification
+
+- All **17 core tests pass**, including new coverage for local join-code enrollment, supporter permissions, one-use codes, expiry/replacement/revocation, invalid names/codes, and loading existing JSON saves without an invitation.
+- Xcode simulator build-for-testing succeeds on the installed iOS 27.0 runtime (iPhone 17 destination). The app deployment target remains iOS 16.0 and device family remains iPhone only.
+- Hospital billing is a presentation-only SwiftUI view. Payment and payment-method buttons are disabled; there are no editable payment fields, network calls, billing state mutations, or payment dependencies.
+- All **six iPhone 17 / iOS 27.0 UI tests pass**: caregiver journey and persistence, task creation, invalid-code rejection followed by successful join/claim/relaunch, nonfunctional hospital billing, largest-text task actions, and mock service payment failure/retry.
+- Visually inspected captured Plan and Hospital billing screens: readable cards, four clear tabs, unclipped invoice labels, and visibly labeled mock payment.
+- Source whitespace check passes. No physical-device test was performed for this update.
+
+Codes work only on the current device and require a shared backend/authentication for real cross-device invitations. Physical iPad rehearsal, minimum-iOS runtime testing, and manual VoiceOver/human usability testing remain outstanding for this update. Prior implementation results below are historical, not retests of this change.
+
+---
+
 # Initial iOS implementation verification
 
 Verified locally on October 9, 2026 with Xcode 27.0 (27A266a), Swift 6.4, and the installed iOS 26.5 Simulator runtime. The source deployment target remains iOS 16.0; no iOS 16 runtime is installed, so minimum-version runtime behavior has not been exercised.

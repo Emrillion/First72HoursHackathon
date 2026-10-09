@@ -30,6 +30,8 @@ struct RootView: View {
                     .tabItem { Label("Find Help", systemImage: "hands.sparkles") }
                 NavigationStack { CircleView() }
                     .tabItem { Label("Circle", systemImage: "person.2") }
+                NavigationStack { HospitalView() }
+                    .tabItem { Label("Hospitals", systemImage: "building.2") }
             }
         }
     }
@@ -58,7 +60,8 @@ struct WelcomeView: View {
                     Button("Explore the demo plan") { store.reset() }
                         .buttonStyle(PrimaryButton()).accessibilityIdentifier("exploreDemo")
                 }
-                Section("Or start a fictional plan") {
+                Section {
+                    DisclosureGroup("Create a new care plan") {
                     TextField("Patient display name", text: $name).textContentType(.nickname)
                     DatePicker("Discharged", selection: $discharge, in: ...Date())
                     Toggle("I’m coordinating for myself", isOn: $selfCoordinating)
@@ -82,6 +85,7 @@ struct WelcomeView: View {
                                                      budgetCents: cents, selfCoordinating: selfCoordinating) }
                     }.buttonStyle(PrimaryButton())
                         .disabled(name.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || validBudget == nil)
+                    }
                 }
             }.scrollContentBackground(.hidden).background(CareTheme.cloud)
                 .navigationTitle("CareShare").navigationBarTitleDisplayMode(.inline)

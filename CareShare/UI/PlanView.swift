@@ -2,14 +2,14 @@ import SwiftUI
 
 struct PlanView: View {
     @EnvironmentObject var store: AppStore
-    @State private var filter = "All"
+    @State private var filter = "To do"
     @State private var adding = false
-    private let filters = ["All", "Needs help", "Covered", "Done"]
+    private let filters = ["To do", "Needs help", "Done", "All"]
     private var tasks: [CareTask] {
         store.state.visibleTasks().filter {
             switch filter {
             case "Needs help": return $0.status == .needsHelp
-            case "Covered": return $0.status == .claimed || $0.status == .arranged
+            case "To do": return $0.status != .completed
             case "Done": return $0.status == .completed
             default: return true
             }
@@ -20,30 +20,28 @@ struct PlanView: View {
         ScrollView {
             VStack(alignment: .leading, spacing: 24) {
                 if let plan = store.state.plan {
-                    VStack(alignment: .leading, spacing: 18) {
-                        HStack {
-                            Image("BrandSymbol").resizable().scaledToFit().frame(width: 40, height: 40).accessibilityHidden(true)
-                            Text("YOUR RECOVERY, TOGETHER").font(.caption.weight(.bold)).tracking(1)
-                        }
-                        Text("A little help for\n\(plan.patientName).")
-                            .font(.largeTitle.bold()).fixedSize(horizontal: false, vertical: true)
-                        Text("The first 72 hours").font(.headline)
-                        Text("\(plan.discharge.careDate) – \(plan.windowEnd.careDate)")
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("\(plan.patientName)’s care plan").font(.title.bold())
+                        Text("One thing at a time. Your next steps are below.")
                             .font(.subheadline).foregroundStyle(CareTheme.muted)
                         let all = store.state.visibleTasks()
                         let done = all.filter { $0.status == .completed }.count
                         ProgressView(value: Double(done), total: Double(max(1, all.count)))
                             .accessibilityLabel("\(done) of \(all.count) tasks completed")
-                        Text("\(all.filter { $0.status == .needsHelp }.count) need help · \(done) of \(all.count) complete")
+                        Text("\(all.filter { $0.status == .needsHelp }.count) need help · \(done) of \(all.count) done")
                             .font(.subheadline.weight(.semibold))
+                        DisclosureGroup("First 72 hours") {
+                            Text("\(plan.discharge.careDate) – \(plan.windowEnd.careDate)")
+                                .font(.footnote).frame(maxWidth: .infinity, alignment: .leading)
+                        }.font(.subheadline)
                         if Date() > plan.windowEnd {
-                            Text("The 72-hour window has ended. Your remaining needs stay here.").font(.callout)
+                            Text("Your remaining needs stay here after the first 72 hours.").font(.callout)
                         }
-                    }.padding(24).frame(maxWidth: .infinity, alignment: .leading)
-                        .background(CareTheme.mint).clipShape(RoundedRectangle(cornerRadius: 28))
+                    }.padding(20).frame(maxWidth: .infinity, alignment: .leading)
+                        .background(CareTheme.mint).clipShape(RoundedRectangle(cornerRadius: 24))
                 }
                 HStack(alignment: .firstTextBaseline) {
-                    Text("Your plan").font(.title2.bold())
+                    Text(filter == "Done" ? "Completed" : "Your tasks").font(.title2.bold())
                     Spacer()
                     if store.state.canCoordinate {
                         Button { adding = true } label: { Label("Add task", systemImage: "plus") }.frame(minHeight: 44)
@@ -70,8 +68,6 @@ struct PlanView: View {
                     NavigationLink { TaskDetailView(taskID: task.id) } label: { TaskCard(task: task) }
                         .buttonStyle(.plain).accessibilityIdentifier("task-\(task.title)")
                 }
-                Text("Viewing as \(store.state.activeMember?.name ?? "") · change demo role in Circle")
-                    .font(.footnote).foregroundStyle(CareTheme.muted)
                 DemoNotice()
             }.padding(16)
         }.background(CareTheme.cloud)
@@ -85,22 +81,25 @@ struct TaskCard: View {
     let task: CareTask
     var body: some View {
         CareCard {
-            HStack(alignment: .top) {
-                Image(systemName: task.category.symbol).font(.title2)
-                    .frame(width: 46, height: 46).background(CareTheme.cloud).clipShape(RoundedRectangle(cornerRadius: 14)).accessibilityHidden(true)
-                Spacer()
-                StatusBadge(status: task.status)
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: task.category.symbol).font(.title3)
+                    .frame(width: 40, height: 40).background(CareTheme.cloud)
+                    .clipShape(RoundedRectangle(cornerRadius: 12)).accessibilityHidden(true)
+                VStack(alignment: .leading, spacing: 6) {
+                    Text(task.title).font(.headline).fixedSize(horizontal: false, vertical: true)
+                    Text(task.due.careDate).font(.subheadline).foregroundStyle(CareTheme.muted)
+                }
+                Spacer(minLength: 0)
+                Image(systemName: "chevron.right").font(.caption).padding(.top, 6).accessibilityHidden(true)
             }
-            Text(task.title).font(.title3.weight(.semibold)).fixedSize(horizontal: false, vertical: true)
-            Label(task.due.careDate, systemImage: "clock").font(.subheadline).foregroundStyle(CareTheme.muted)
-            if task.isOverdue(at: Date()) { Label("Overdue · still needs follow-through", systemImage: "exclamationmark.circle").font(.subheadline).foregroundStyle(CareTheme.amber) }
-            if task.isPriority { Label("Priority", systemImage: "flag").font(.caption.weight(.semibold)) }
-            Divider()
-            HStack(alignment: .top) {
-                Text(task.status == .needsHelp ? "A little help needed" : store.state.ownerName(for: task))
-                    .font(.subheadline).foregroundStyle(CareTheme.muted)
-                Spacer()
-                Image(systemName: "arrow.up.right").accessibilityHidden(true)
+            StatusBadge(status: task.status)
+            if task.status != .needsHelp {
+                Text(store.state.ownerName(for: task)).font(.subheadline).foregroundStyle(CareTheme.muted)
+            }
+            if task.isOverdue(at: Date()) {
+                Label("Overdue", systemImage: "exclamationmark.circle").font(.subheadline).foregroundStyle(CareTheme.amber)
+            } else if task.isPriority {
+                Label("Priority", systemImage: "flag").font(.caption.weight(.semibold))
             }
         }.accessibilityElement(children: .combine)
     }
@@ -131,10 +130,12 @@ struct TaskEditor: View {
                     TextField("What would help?", text: $title).accessibilityIdentifier("taskTitle")
                     Picker("Category", selection: $category) { ForEach(TaskCategory.allCases) { Text($0.rawValue).tag($0) } }
                     DatePicker("Needed by", selection: $due)
-                    Toggle("Priority", isOn: $priority)
-                    TextField("Notes (optional)", text: $notes, axis: .vertical).lineLimit(3...6)
-                    Picker("Share with", selection: $visibility) {
-                        ForEach(TaskVisibility.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                    DisclosureGroup("More options") {
+                        Toggle("Priority", isOn: $priority)
+                        TextField("Notes (optional)", text: $notes, axis: .vertical).lineLimit(3...6)
+                        Picker("Share with", selection: $visibility) {
+                            ForEach(TaskVisibility.allCases, id: \.self) { Text($0.rawValue).tag($0) }
+                        }
                     }
                 }
                 Section {
