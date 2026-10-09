@@ -30,7 +30,11 @@ Can we make the assumption that everyone has a caregiver? "No." "That being said
 
 (Me): Do we need to actually integrate things like stripe for payment? "There should be a mechanism to show payment would be accepted here, it can be UI or UX... don't actually take payment." "We do not need to actually make a stipe account, just show payment *could* be accepted here."
 
+What other complications could happen with patients? "Often times people who are discharged, people tend to have more than just one condition... a person who has a broken bone probably has diabetes, etc." "Use what you have to inform what you need" "The information lives somewhere."
 
+Why is it the "72" hour challenge? "Because this is the time period where people die due to issues." 
+
+Can we assume everyone has internet? "Yes"
 
 How judges score:
 1-5 Points: Caregiver problem and value. Does it meet a specific non-clinical need in the first 72 hours and create clear value for the caregiver?
