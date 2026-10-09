@@ -1,0 +1,90 @@
+[
+  {
+    "pair": "Body on white",
+    "foreground": "#173C38",
+    "background": "#FFFFFF",
+    "ratio": 12.07,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Muted on Cloud",
+    "foreground": "#526B65",
+    "background": "#F7F9F5",
+    "ratio": 5.43,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "White on teal",
+    "foreground": "#FFFFFF",
+    "background": "#176B62",
+    "ratio": 6.33,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Teal on mint",
+    "foreground": "#176B62",
+    "background": "#DFF0E8",
+    "ratio": 5.36,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Ink on apricot",
+    "foreground": "#173C38",
+    "background": "#F4C7A5",
+    "ratio": 7.79,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Requested",
+    "foreground": "#80500E",
+    "background": "#FFF0D9",
+    "ratio": 6.09,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Confirmed",
+    "foreground": "#245C43",
+    "background": "#E4F2E9",
+    "ratio": 6.76,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Completed",
+    "foreground": "#55487D",
+    "background": "#EBE8F4",
+    "ratio": 6.66,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Needs attention",
+    "foreground": "#A63C36",
+    "background": "#FCEDEA",
+    "ratio": 5.55,
+    "threshold": 4.5,
+    "passes": true
+  },
+  {
+    "pair": "Input boundary",
+    "foreground": "#789087",
+    "background": "#FFFFFF",
+    "ratio": 3.42,
+    "threshold": 3,
+    "passes": true
+  },
+  {
+    "pair": "Focus ring",
+    "foreground": "#176B62",
+    "background": "#F7F9F5",
+    "ratio": 5.98,
+    "threshold": 3,
+    "passes": true
+  }
+]

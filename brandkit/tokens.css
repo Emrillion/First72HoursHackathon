@@ -1,0 +1,14 @@
+@font-face{font-family:Manrope;src:url('fonts/Manrope-Variable.ttf') format('truetype');font-weight:200 800;font-style:normal;font-display:swap}
+:root{
+ color-scheme:light;
+ --cs-primary:#176B62;--cs-primary-hover:#104C46;--cs-ink:#173C38;--cs-muted:#526B65;
+ --cs-background:#F7F9F5;--cs-surface:#FFFFFF;--cs-mint:#DFF0E8;--cs-apricot:#F4C7A5;--cs-lilac:#EBE8F4;
+ --cs-border:#D7E2DC;--cs-input-border:#789087;--cs-focus:#176B62;
+ --cs-success:#245C43;--cs-success-bg:#E4F2E9;--cs-warning:#80500E;--cs-warning-bg:#FFF0D9;
+ --cs-danger:#A63C36;--cs-danger-bg:#FCEDEA;--cs-complete:#55487D;--cs-complete-bg:#EBE8F4;
+ --cs-font:Manrope,system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+ --cs-text-xs:.8125rem;--cs-text-sm:.875rem;--cs-text-md:1rem;--cs-text-lg:1.125rem;
+ --cs-radius-sm:10px;--cs-radius-md:16px;--cs-radius-lg:24px;--cs-radius-pill:999px;
+ --cs-space-1:4px;--cs-space-2:8px;--cs-space-3:12px;--cs-space-4:16px;--cs-space-6:24px;--cs-space-8:32px;--cs-space-12:48px;--cs-space-16:64px;
+ --cs-shadow:0 8px 32px #173c380a;--cs-duration:160ms;
+}
