@@ -36,6 +36,8 @@ Why is it the "72" hour challenge? "Because this is the time period where people
 
 Can we assume everyone has internet? "Yes"
 
+What is our level of information access? Can we assumed we have a partnership with a hospital? "There is no boundary, dream as big as you can. As long as you have boundaries on that data, security, etc." 
+
 How judges score:
 1-5 Points: Caregiver problem and value. Does it meet a specific non-clinical need in the first 72 hours and create clear value for the caregiver?
 1-5 points: Working product experience. Can a caregiver move from need to fulfillment in under ten minutes? 
