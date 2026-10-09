@@ -28,7 +28,7 @@ What is typical caregiver age? "There is a huge range" "There is a large portion
 
 Can we make the assumption that everyone has a caregiver? "No." "That being said, for this prompt, you can generally assume they have a caregiver, it would be really cool if you account for the situation where they don't have a caregiver"
 
-(Me): Do we need to actually integrate things like stripe for payment? "There should be a mechanism to show payment would be accepted here, it can be UI or UX... don't actually take payment." 
+(Me): Do we need to actually integrate things like stripe for payment? "There should be a mechanism to show payment would be accepted here, it can be UI or UX... don't actually take payment." "We do not need to actually make a stipe account, just show payment *could* be accepted here."
 
 
 
